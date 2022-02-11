@@ -1,48 +1,36 @@
-import { Component } from "react";
+import { useState } from "react";
 import Generator from "./components/Generator";
 import Resume from "./components/Resume";
 import "./styles/App.css";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.createResume = this.createResume.bind(this);
-    this.editResume = this.editResume.bind(this);
-  }
-  state = {
-    editing: true,
-    data: {
+function App() {
+  const [editing, setEditing] = useState(true);
+  const [data, setData] = useState({
+    personal: {
       name: "",
       phone: "",
       email: "",
-      schools: [],
     },
-  };
+    schools: [],
+  });
 
-  createResume(data) {
-    this.setState({
-      editing: false,
-      data,
-    });
+  function createResume(data) {
+    setData(data);
+    setEditing(false);
   }
 
-  editResume() {
-    this.setState({
-      editing: true,
-    });
+  function editResume() {
+    setEditing(true);
   }
 
-  render() {
-    return (
-      <div className="app">
-        {this.state.editing ? (
-          <Generator data={this.state.data} createResume={this.createResume} />
-        ) : (
-          <Resume data={this.state.data} editResume={this.editResume} />
-        )}
-      </div>
-    );
-  }
+  return (
+    <div className="app">
+      {editing ? (
+        <Generator data={data} createResume={createResume} />
+      ) : (
+        <Resume data={data} editResume={editResume} />
+      )}
+    </div>
+  );
 }
-
 export default App;
